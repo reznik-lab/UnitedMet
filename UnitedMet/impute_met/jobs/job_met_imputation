@@ -31,7 +31,7 @@ echo ${ndims}
 echo $(pwd)
 echo ${results_dir}
 mkdir -p ${results_dir} ${logs_dir}
- id1=$(sbatch --parsable -p componc_cpu -J "${job1}" -N 1 -n 1 -c 20 --mem=20G -t 2:30:00 -o ${logs_dir}/${job1}_%j.stdout -e ${logs_dir}/${job1}_%j.stderr --wrap="source ${conda_path};conda activate UnitedMet;python3 -m ${script1} $opts -fp ${file_path} -rna ${rna_matched_data_dir} -met ${met_matched_data_dir} -id ${rna_imputation_data_dir} -ck -rd ${results_dir} -n ${ndims}")
+jid1=$(sbatch --parsable -p componc_cpu -J "${job1}" -N 1 -n 1 -c 20 --mem=20G -t 2:30:00 -o ${logs_dir}/${job1}_%j.stdout -e ${logs_dir}/${job1}_%j.stderr --wrap="source ${conda_path};conda activate UnitedMet;python3 -m ${script1} $opts -fp ${file_path} -rna ${rna_matched_data_dir} -met ${met_matched_data_dir} -id ${rna_imputation_data_dir} -ck -rd ${results_dir} -n ${ndims}")
 jid2=$(sbatch --parsable -p componc_cpu -J "${job2}" --depend=afterok:$jid1 -N 1 -n 1 -c 24 --mem=72G -t 0:15:00 -o ${logs_dir}/${job2}_%j.stdout -e ${logs_dir}/${job2}_%j.stderr --wrap="source ${conda_path};conda activate UnitedMet;python3 -m ${script2} -ve -rd ${results_dir}")
 
 echo "run options:"
